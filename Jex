@@ -1,0 +1,102 @@
+import React, { useState } from 'react';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ImageBackground } from 'react-native';
+import auth from '@react-native-firebase/auth';
+
+const LoginScreen = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+      console.log('User logged in');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <ImageBackground
+      source={{ uri: 'https://your-background-image-url.com' }}  // Custom Background
+      style={styles.container}
+    >
+      <View style={styles.loginBox}>
+        <Text style={styles.title}>ECL Wallet</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          onChangeText={setPassword}
+        />
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loginBox: {
+    width: '80%',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 30,
+    color: 'white',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
+  },
+  button: {
+    backgroundColor: '#00C853',  // Binance Green color
+    padding: 15,
+    borderRadius: 5,
+    marginTop: 20,
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+  },
+});
+
+export default LoginScreen;const handleLogin = async () => {
+  try {
+    const response = await fetch('https://your-api-url.com/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
+    if (data.success) {
+      console.log('Logged in!');
+    } else {
+      console.log('Login failed');
+    }
+  } catch (error) {
+    console.error('Error logging in', error);
+  }
+};
